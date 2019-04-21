@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <title>GitHub Explorer</title>
+  <meta name="description" content="Filter and sort all repositories of a user or organization">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.1/css/jquery.tablesorter.pager.min.css" />
+  <link rel="stylesheet" href="tablesorter-bootstrap.css" />
+  <link rel="stylesheet" href="github-explorer.css" />
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.1/js/jquery.tablesorter.min.js" integrity="sha256-uC1JMW5e1U5D28+mXFxzTz4SSMCywqhxQIodqLECnfU=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.1/js/jquery.tablesorter.widgets.min.js" integrity="sha256-Xx4HRK+CKijuO3GX6Wx7XOV2IVmv904m0HKsjgzvZiY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.1/js/extras/jquery.tablesorter.pager.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <div class="container">
+    <div class="d-flex justify-content-center mt-3 mb-3">
+      <form class="form-inline" action="javascript:list()">
+        <label for="owner">Owner</label>
+        <input type="text" class="form-control ml-2 mr-2" id="owner" />
+        <button type="submit" class="btn btn-success">Explore</button>
+      </form>
+    </div>
+    <div class="d-flex justify-content-center mb-3">
+      <div class="text-center" id="loading"></div>
+    </div>
+    <div class="d-flex justify-content-center">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th class="filter-select filter-exact filter-onlyAvail">Language</th>
+            <th class="filter-select filter-exact filter-onlyAvail">Type</th>
+            <th class="sorter-customDate">Creation Date</th>
+            <th class="sorter-customDate">Push Date</th>
+            <th class="sortInitialOrder-desc">Watchers</th>
+            <th class="sortInitialOrder-desc">Stars</th>
+            <th class="sortInitialOrder-desc">Forks</th>
+            <th class="sortInitialOrder-desc">Issues</th>
+            <th class="sortInitialOrder-desc">PRs</th>
+            <th class="sortInitialOrder-desc">Projects</th>
+            <th class="sortInitialOrder-desc">Commits</th>
+            <th class="sortInitialOrder-desc">Branches</th>
+            <th class="sortInitialOrder-desc">Releases</th>
+            <th class="sortInitialOrder-desc">Deployments</th>
+          </tr>
+        </thead>
+        <tfoot>
+          <tr>
+            <th colspan="16">
+              <div class="ts-pager form-inline">
+                <div class="btn-group" role="group">
+                  <button type="button" class="btn btn-outline-secondary first" title="Go to first page"><i class="fas fa-step-backward"></i></button>
+                  <button type="button" class="btn btn-outline-secondary prev" title="Go to previous page"><i class="fas fa-backward"></i></button>
+                </div>
+                <span class="ml-2 mr-2 pagedisplay"></span>
+                <div class="btn-group" role="group">
+                  <button type="button" class="btn btn-outline-secondary next" title="Go to next page"><i class="fas fa-forward"></i></button>
+                  <button type="button" class="btn btn-outline-secondary last" title="Go to last page"><i class="fas fa-step-forward"></i></button>
+                </div>
+                <span class="ml-2 mr-2">Page size:</span>
+                <select class="form-control pagesize" title="Select page size">
+                  <option value="10">10</option>
+                  <option value="20">20</option>
+                  <option value="30">30</option>
+                  <option value="50">50</option>
+                  <option value="100">100</option>
+                  <option value="all">All Rows</option>
+                </select>
+                <span class="ml-2 mr-2">Page number:</span>
+                <select class="form-control gotoPage" title="Select page number"></select>
+              </div>
+            </th>
+          </tr>
+        </tfoot>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-122994978-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  <script src="github-explorer.js"></script>
+</body>
+
+</html>
