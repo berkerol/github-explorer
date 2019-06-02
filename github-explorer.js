@@ -73,7 +73,7 @@ function query (type, name, after) {
   }`;
 }
 
-async function list (type) { // eslint-disable-line no-unused-vars
+window.list = async function (type) {
   const name = type ? document.getElementById('user').value : document.getElementById('organization').value;
   document.getElementById('loading').innerHTML = 'Loading';
   let after = '';
@@ -117,7 +117,7 @@ async function list (type) { // eslint-disable-line no-unused-vars
   }
   $('table').trigger('update');
   document.getElementById('loading').innerHTML = '';
-}
+};
 
 $(function () {
   $('table').tablesorter({
