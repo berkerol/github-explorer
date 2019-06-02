@@ -73,7 +73,7 @@ function query (owner, after) {
   }`;
 }
 
-async function list () { // eslint-disable-line no-unused-vars
+window.list = async function () {
   const owner = document.getElementById('owner').value;
   document.getElementById('loading').innerHTML = 'Loading';
   let after = '';
@@ -117,7 +117,7 @@ async function list () { // eslint-disable-line no-unused-vars
   }
   $('table').trigger('update');
   document.getElementById('loading').innerHTML = '';
-}
+};
 
 $(function () {
   $('table').tablesorter({
