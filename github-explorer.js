@@ -1,6 +1,21 @@
 /* global $ */
 let bearer;
 
+const tr = document.createElement('tr');
+const filter = 'filter-select filter-exact filter-onlyAvail';
+const sorter = 'sorter-customDate';
+const sort = 'sortInitialOrder-desc';
+const headers = [['', 'Name'], ['', 'Description'], [filter, 'Language'], [filter, 'Type'], [sorter, 'Creation Date'], [sorter, 'Push Date'],
+  [sort, 'Watchers'], [sort, 'Stars'], [sort, 'Forks'], [sort, 'Issues'], [sort, 'PRs'], [sort, 'Projects'], [sort, 'Commits'], [sort, 'Branches'],
+  [sort, 'Releases'], [sort, 'Deployments']];
+for (const header of headers) {
+  const th = document.createElement('th');
+  th.className = header[0];
+  th.innerHTML = header[1];
+  tr.appendChild(th);
+}
+document.getElementsByTagName('thead')[0].appendChild(tr);
+
 window.fetch('https://gist.githubusercontent.com/mobikasaba/9621924d939b5c818aa25c4114e29abd/raw/293aa51fd8d1d9cefefc19eea117efbe8dc5e551/github-explorer')
   .then(res => {
     return res.text();
