@@ -5,7 +5,9 @@
 [![ECMAScript](https://img.shields.io/badge/ECMAScript-latest-brightgreen.svg)](https://www.ecma-international.org/ecma-262)
 [![license](https://img.shields.io/badge/license-GNU%20GPL%20v3.0-blue.svg)](https://github.com/berkerol/github-explorer/blob/master/LICENSE)
 
-Filter and sort all repositories of a user or organization. You can view it [here](https://berkerol.github.io/github-explorer/github-explorer.html).
+Filter and sort all repositories of a user or organization.
+
+[![button](view.png)](https://berkerol.github.io/github-explorer/github-explorer.html)
 
 ## Contribution
 
