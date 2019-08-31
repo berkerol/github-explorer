@@ -2,7 +2,7 @@
 let bearer;
 
 const tr = document.createElement('tr');
-const filter = 'filter-select filter-exact filter-onlyAvail';
+const filter = 'filter-select filter-exact filter-onlyAvail mark-ignore';
 const sorter = 'sorter-customDate';
 const sort = 'sortInitialOrder-desc';
 const headers = [['', 'Name'], ['', 'Description'], [filter, 'Language'], [filter, 'Type'], [sorter, 'Creation Date'], [sorter, 'Push Date'],
@@ -140,17 +140,37 @@ $(function () {
     sortReset: true,
     sortList: [[0, 0]],
     headerTemplate: '{content} {icon}',
-    widgets: ['uitheme', 'zebra', 'resizable', 'filter', 'saveSort', 'stickyHeaders']
+    widgets: ['uitheme', 'zebra', 'saveSort', 'resizable', 'filter', 'mark', 'print', 'columnSelector', 'stickyHeaders'],
+    widgetOptions: {
+      filter_cssFilter: 'form-control',
+      filter_external: '.search',
+      filter_reset: '.reset-filter',
+      filter_saveFilters: true,
+      print_styleSheet: 'https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.1/css/theme.bootstrap_4.min.css',
+      columnSelector_container: '#popover-target',
+      columnSelector_mediaqueryState: false
+    }
   }).tablesorterPager({
     container: $('.ts-pager'),
     output: '{startRow} - {endRow} / {filteredRows} ({totalRows})'
   });
-
   $.tablesorter.addParser({
     id: 'customDate',
     format: s => {
       return Date.parse(s);
     },
     type: 'numeric'
+  });
+  $('#popover').popover({
+    placement: 'right',
+    html: true,
+    content: $('#popover-target')
+  });
+  $('.reset-sort').click(function () {
+    $('table').trigger('saveSortReset').trigger('sortReset');
+    return false;
+  });
+  $('.print').click(function () {
+    $('table').trigger('printTable');
   });
 });
