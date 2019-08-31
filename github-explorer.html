@@ -7,9 +7,9 @@
   <title>GitHub Explorer</title>
   <meta name="description" content="Filter and sort all repositories of a user or organization">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css" integrity="sha256-UzFD2WYH2U1dQpKDjjZK72VtPeWP50NoJjd26rnAdUI=" crossorigin="anonymous"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.1/css/theme.bootstrap_4.min.css" integrity="sha256-vFn0MM8utz2N3JoNzRxHXUtfCJLz5Pb9ygBY2exIaqg=" crossorigin="anonymous"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.1/css/jquery.tablesorter.pager.min.css" />
-  <link rel="stylesheet" href="tablesorter-bootstrap.css" />
   <link rel="stylesheet" href="github-explorer.css" />
   <script>
     window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
@@ -18,9 +18,14 @@
   </script>
   <script async src='https://www.google-analytics.com/analytics.js'></script>
   <script defer src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js" integrity="sha256-4iQZ6BVL4qNKlQ27TExEhBN1HFPvAvAMbFavKKosSWQ=" crossorigin="anonymous"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.1/js/jquery.tablesorter.min.js" integrity="sha256-uC1JMW5e1U5D28+mXFxzTz4SSMCywqhxQIodqLECnfU=" crossorigin="anonymous"></script>
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.1/js/jquery.tablesorter.widgets.min.js" integrity="sha256-Xx4HRK+CKijuO3GX6Wx7XOV2IVmv904m0HKsjgzvZiY=" crossorigin="anonymous"></script>
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.1/js/extras/jquery.tablesorter.pager.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.1/js/widgets/widget-mark.min.js" integrity="sha256-DfoIPa9QOOTpU0SbnxRtz885xtnJf3oCa3mEQzLwNRg=" crossorigin="anonymous"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.1/js/widgets/widget-print.min.js" integrity="sha256-rQHI1L5ju3qcr/vvnel2yzoKcvX7TfpEvATa41JdfUM=" crossorigin="anonymous"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.1/js/widgets/widget-columnSelector.min.js" integrity="sha256-h4pbs31FqVOemgEtyBwsB1n4W6zVF/XEXy2gtZtIe2U=" crossorigin="anonymous"></script>
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
   <script defer src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
   <script defer src="github-explorer.js"></script>
@@ -35,8 +40,24 @@
         <button type="submit" class="btn btn-success">Explore</button>
       </form>
     </div>
-    <div class="d-flex justify-content-center mb-3">
+    <div class="d-flex justify-content-center">
       <div class="text-center" id="loading"></div>
+    </div>
+    <div class="d-flex justify-content-center mt-3 mb-3">
+      <form class="form-inline" action="javascript:void(0);">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fas fa-search"></i></span>
+          </div>
+          <input type="text" class="form-control search" data-column="any" placeholder="Search table" />
+        </div>
+        <button type="button" class="btn btn-primary ml-2 mr-2 reset-filter">Reset Filters</button>
+        <button type="button" class="btn btn-success reset-sort">Reset Sort</button>
+        <button type="button" class="btn btn-info ml-2" id="popover">Select Columns</button>
+        <div class="d-none">
+          <div id="popover-target"></div>
+        </div>
+      </form>
     </div>
     <div class="d-flex justify-content-center">
       <table class="table table-bordered">
@@ -66,6 +87,7 @@
                 </select>
                 <span class="ml-2 mr-2">Page number:</span>
                 <select class="form-control gotoPage" title="Select page number"></select>
+                <button type="button" class="btn btn-success ml-2 print">Print Table</button>
               </div>
             </th>
           </tr>
