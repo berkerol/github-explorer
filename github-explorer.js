@@ -7,7 +7,7 @@ const sorter = 'sorter-customDate';
 const sort = 'sortInitialOrder-desc';
 const headers = [['', 'Name'], ['', 'Description'], [filter, 'Language'], [filter, 'Type'], [sorter, 'Creation Date'], [sorter, 'Push Date'],
   [sort, 'Watchers'], [sort, 'Stars'], [sort, 'Forks'], [sort, 'Issues'], [sort, 'PRs'], [sort, 'Projects'], [sort, 'Commits'], [sort, 'Branches'],
-  [sort, 'Releases'], [sort, 'Deployments']];
+  [sort, 'Releases'], [sort, 'Packages'], [sort, 'Deployments']];
 for (const header of headers) {
   const th = document.createElement('th');
   th.className = header[0];
@@ -79,6 +79,7 @@ function query (owner, after) {
             }
             refs(refPrefix: "refs/heads/") {totalCount}
             releases {totalCount}
+            packages {totalCount}
             deployments {totalCount}
             url
           }
@@ -122,7 +123,7 @@ window.list = async function () {
       text(new Date(repo.node.createdAt)), text(new Date(repo.node.pushedAt)), text(repo.node.watchers.totalCount),
       text(repo.node.stargazers.totalCount), text(repo.node.forkCount), text(repo.node.issues.totalCount),
       text(repo.node.pullRequests.totalCount), text(repo.node.projects.totalCount), text(repo.node.defaultBranchRef.target.history.totalCount),
-      text(repo.node.refs.totalCount), text(repo.node.releases.totalCount), text(repo.node.deployments.totalCount)];
+      text(repo.node.refs.totalCount), text(repo.node.releases.totalCount), text(repo.node.packages.totalCount), text(repo.node.deployments.totalCount)];
     for (const field of fields) {
       const cell = document.createElement('td');
       cell.appendChild(field);
