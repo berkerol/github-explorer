@@ -64,12 +64,12 @@ function query (owner, after) {
             isFork
             createdAt
             pushedAt
-            stargazers {totalCount}
             watchers {totalCount}
+            stargazers {totalCount}
             forkCount
-            issues {totalCount}
-            pullRequests {totalCount}
-            projects {totalCount}
+            issues(states: OPEN) {totalCount}
+            pullRequests(states: OPEN) {totalCount}
+            projects(states: OPEN) {totalCount}
             defaultBranchRef {
               target {
                 ... on Commit {
