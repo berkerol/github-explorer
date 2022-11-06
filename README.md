@@ -1,6 +1,7 @@
 # GitHub Explorer
 
 [![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=berkerol_github-explorer&metric=alert_status)](https://sonarcloud.io/dashboard?id=berkerol_github-explorer)
+[![CI](https://github.com/berkerol/github-explorer/actions/workflows/lint.yml/badge.svg?branch=master)](https://github.com/berkerol/github-explorer/actions/workflows/lint.yml)
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg)](https://github.com/berkerol/github-explorer/issues)
 [![semistandard](https://img.shields.io/badge/code%20style-semistandard-brightgreen.svg)](https://github.com/Flet/semistandard)
 [![ECMAScript](https://img.shields.io/badge/ECMAScript-latest-brightgreen.svg)](https://www.ecma-international.org/ecma-262)
@@ -9,6 +10,10 @@
 Filter and sort all repositories of a user or organization.
 
 [![button](view.png)](https://berkerol.github.io/github-explorer/github-explorer.html)
+
+## Continous Integration
+
+It is setup using GitHub Actions in `.github/workflows/lint.yml`
 
 ## Contribution
 
